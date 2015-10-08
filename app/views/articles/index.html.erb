@@ -1,0 +1,40 @@
+<div class="jumbotron">
+  <h1>Paulklee Guild</h1>
+  <p><%= t(".jumbotron") %></p>
+  <div class="row">
+    <div class="col-md-6">
+      <% if policy(Article.new).create? %>
+        <p><a href="/articles/new" class="btn btn-material-indigo btn-lg"><%= t(".write") %></a></p>
+      <% end %>
+    </div>
+    <div class="col-md-6 jumbo">
+      <% if !user_signed_in? %>
+        <p>
+          <a href="/users/sign_in" class="btn btn-material-indigo"><%= t(".signin") %></a> or 
+          <a href="/users/sign_up" class="btn btn-material-indigo"><%= t(".signup") %></a>
+        </p>
+      <% else %>
+        <a href="/users" class="btn btn-material-indigo">Users index</a>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="list-group">
+  <% @articles.each do |article| %>
+    <div class="list-group-item">
+      <div class="row-action-primary">
+        <i class="mdi-file-folder"></i>
+      </div>
+      <div class="row-content">
+      <div class="least-content"><%=article.user.name %></div>
+        <h4 class="list-group-item-heading"><%= link_to "#{article.title}", article_path(article.id) %></h4>
+        <p class="list-group-item-text"><%= article.content %></p>
+      </div>
+    </div>
+    <div class="list-group-separator"></div>
+  <% end %>
+  <%= paginate @articles %>
+</div>
+
+

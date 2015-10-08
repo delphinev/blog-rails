@@ -1,0 +1,11 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for @article do |form| %>
+      <input type="text" name="article[title]" class="form-control floating-label" placeholder="<%= t(".title") %>" />
+      <textarea name="article[content]" class="form-control floating-label" rows="10" placeholder="<%= t(".content") %>"></textarea>
+      <%= form.file_field :picture %>
+      <input type="submit" class="btn btn-material-indigo" value="<%= t(".submit") %>"/>
+    <% end %>
+    <a href="/"><%= t(".back") %></a>
+  </div>
+</div>

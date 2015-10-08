@@ -1,0 +1,8 @@
+<h1>List of users</h1>
+<% if user_signed_in? %>
+  <% @users.each do |user| %>
+  <p><%= user.name %> :<a href="/users/<%= user.id %>"> Profile </a> <a href="<%= user.id %>/message/new"><i class="mdi-content-mail" ></i></a></p>
+  <% end %>
+<% end %>
+
+<%= link_to 'Back', root_path %>

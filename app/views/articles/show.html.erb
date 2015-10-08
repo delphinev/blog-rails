@@ -1,0 +1,45 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <%= image_tag @article.picture.url(:medium) %>
+    <h3><%= @article.title %></h3>
+    <p><%= @article.content %></p>
+    <p>Author: <%= @article.user.name %>, <%= @article.date %></p>
+    <a href="/"><div class="icon-preview"><i class="mdi-navigation-arrow-back"></i></div></a>
+    <% if policy(@article).update? %>
+      <a href="/articles/<%= @article.id %>/edit"><div class="icon-preview"><i class="mdi-editor-mode-edit"></i></div></a>
+
+      <%= form_for @article, method: :delete do |f| %>
+        <button class="btn icon-preview mdi-action-delete">
+          <%= t(".delete") %>
+        </button>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<h3> Comments </h3>
+<% @article.comments.each do |comment| %>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <p><%= comment.content %></p>
+    <p><%= comment.user.name %>, <%= comment.created_at %></p>
+    <% if policy(comment).update? %>
+      <a href="/comments/<%= comment.id %>/edit"><div class="icon-preview"><i class="mdi-editor-mode-edit"></i></div></a>
+      <%= form_tag [@article, comment], method: "delete" do %>
+        <button class="btn icon-preview mdi-action-delete">
+          <%= t(".delete") %>
+        </button>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<% end %>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <%= form_for [@article, @comment] do %>
+      <textarea row="5" name="content"></textarea>
+      <input type="submit" value="Submit" />
+    <% end %>
+  </div>
+</div>
+
