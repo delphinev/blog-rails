@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20151001102207) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "articles", force: :cascade do |t|
     t.string   "title"
     t.string   "content"
@@ -24,7 +27,7 @@ ActiveRecord::Schema.define(version: 20151001102207) do
     t.datetime "picture_updated_at"
   end
 
-  add_index "articles", ["user_id"], name: "index_articles_on_user_id"
+  add_index "articles", ["user_id"], name: "index_articles_on_user_id", using: :btree
 
   create_table "comments", force: :cascade do |t|
     t.text     "content"
@@ -35,7 +38,7 @@ ActiveRecord::Schema.define(version: 20151001102207) do
     t.integer  "commentable_id"
   end
 
-  add_index "comments", ["user_id"], name: "index_comments_on_user_id"
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "messages", force: :cascade do |t|
     t.string  "subject"
@@ -44,8 +47,8 @@ ActiveRecord::Schema.define(version: 20151001102207) do
     t.integer "to_id"
   end
 
-  add_index "messages", ["from_id"], name: "index_messages_on_from_id"
-  add_index "messages", ["to_id"], name: "index_messages_on_to_id"
+  add_index "messages", ["from_id"], name: "index_messages_on_from_id", using: :btree
+  add_index "messages", ["to_id"], name: "index_messages_on_to_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -58,17 +61,22 @@ ActiveRecord::Schema.define(version: 20151001102207) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.string   "name"
-    t.string   "role"
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
+    t.integer  "failed_attempts",        default: 0,  null: false
+    t.string   "unlock_token"
+    t.datetime "locked_at"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.string   "name"
+    t.string   "role"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
 
 end
